@@ -14,7 +14,7 @@ I use a RaspberryPi with python coding to be a bit more versatile when it comes
 to storage, coding and forwarding. 
 
 Serial connection details: 9600 8-N-1 TTL found at X3:
-![](//github.com/rickvanderzwet/IntergasBoilerReader/blob/master/intergas-cw6-connector-layout.png "Connector layout")
+![](https://github.com/rickvanderzwet/IntergasBoilerReader/blob/master/intergas-cw6-connector-layout.png "Connector layout")
 
 I use a [FTDI TTL @ Ebay.com](http://www.ebay.com/sch/i.html?_from=R40&_sacat=0&LH_BIN=1&_nkw=FTDI+usb+TTL&rt=nc&LH_FS=1)
  set at logic level TTL of 5V using the jumper, connectors setup:
@@ -41,6 +41,7 @@ N/C      | 5V
 
 
 # License
+```
 Copyright 2017 Rick van der Zwet
 
 Redistribution and use in source and binary forms, with or without
@@ -63,3 +64,4 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+```
