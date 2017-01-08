@@ -13,7 +13,7 @@ connector which you can commonly source from old ATX power supplies.
 I use a RaspberryPi with python coding to be a bit more versatile when it comes
 to storage, coding and forwarding. 
 
-Serial connection details: 9600 8-N-1 TTL found at X5:
+Serial connection details: `9600 8-N-1` TTL found at X3:
 ![](https://github.com/rickvanderzwet/IntergasBoilerReader/blob/master/intergas-cw6-connector-layout.png "Connector layout")
 
 I use a [FTDI TTL @ Ebay.com](http://www.ebay.com/sch/i.html?_from=R40&_sacat=0&LH_BIN=1&_nkw=FTDI+usb+TTL&rt=nc&LH_FS=1)
