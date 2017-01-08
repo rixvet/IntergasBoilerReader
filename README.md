@@ -1,7 +1,7 @@
 # IntergasBoilerReader
 Reading of Intergas Prestige CW6 using the PC-interface.
 
-Thanks to the (folks of CircuitsOnline.net)[https://www.circuitsonline.net/forum/view/80667/3] for
+Thanks to the [folks of CircuitsOnline.net](https://www.circuitsonline.net/forum/view/80667/3) for
 doing all hard work decoding most of the protocol and connector layout.
 
 I am the owner of of Intergas Prestige CW6 boiler and like to be able to read
@@ -14,16 +14,18 @@ I use a RaspberryPi with python coding to be a bit more versatile when it comes
 to storage, coding and forwarding. 
 
 Serial connection details: 9600 8-N-1 TTL found at X3:
-[[//github.com/rickvanderzwet/IntergasBoilerReader/blob/master/intergas-cw6-connector-layout.png|alt=connector-layout]]
+![](//github.com/rickvanderzwet/IntergasBoilerReader/blob/master/intergas-cw6-connector-layout.png "Connector layout")
 
 I use a [FTDI TTL @ Ebay.com](http://www.ebay.com/sch/i.html?_from=R40&_sacat=0&LH_BIN=1&_nkw=FTDI+usb+TTL&rt=nc&LH_FS=1)
  set at logic level TTL of 5V using the jumper, connectors setup:
 
+```
 WARNING: For safety purposes use galvanic isolation to safety of the systems.
 WARNING: 
 WARNING: POTENTIAL HIGH-VOLTAGES, DISCONNECT MAINS WHEN WORKING ON SYSTEM.
 WARNING: 
 WARNING: Proceed at own risk, you may ruin your equipment or kill yourself.
+```
 
 
 
