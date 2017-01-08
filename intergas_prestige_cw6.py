@@ -163,4 +163,4 @@ def get_packet(port):
 
 
 if __name__ == '__main__':
-  get_packet('/dev/ttyUSB1')
+  get_packet(sys.argv[1])

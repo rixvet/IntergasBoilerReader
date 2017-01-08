@@ -1,3 +1,14 @@
+# Requirements
+```
+apt-get install python-serial
+```
+
+# Usage
+My FTDI-USB TTL is exposed at `/dev/ttyUSB1`, so this will be:
+`python intergas_prestige_cw6.py /dev/ttyUSB1`
+
+Output data is (hard-coded) stored at `/home/pi/INTERGAS_DATA_%Y_%m.csv`.
+
 # IntergasBoilerReader
 Reading of Intergas Prestige CW6 using the PC-interface.
 
