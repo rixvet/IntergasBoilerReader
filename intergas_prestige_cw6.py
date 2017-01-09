@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import argparse
 import csv
 import ctypes
 import glob
@@ -106,7 +107,7 @@ def parse_packet(s):
   
   print "D27", d[27]
   if d[27] == 128:
-      print "In loop", d[27]
+      print "In loop", d[24]
       fault_code = d[29]
       displ_code = 256 + fault_code
   
@@ -133,9 +134,16 @@ def parse_packet(s):
   #      // - uit; wachtstand; 0 Nadraaien CV; 1 Gew. temperatuur bereikt; 2 Zelftest
   #//   3 Ventileren; 4  Ontsteken; 5 CV; 6 Warm water; 7 Opwarmen boiler
   
-  print d
-  print bin(d[27])
-  print bin(d[29])
+  print "raw =", ["%3i" % x for x in d[14:]],getFloat(d[15],d[14]), getFloat(d[17],d[16]), d[24], d[26], d[27], d[29]
+
+
+def parse_file(csvfile):
+  with open(csvfile, "r") as fh:
+    reader = csv.reader(fh, delimiter=";", lineterminator='\n')
+    for row in reader:
+      print row[0], parse_packet(row[1].decode("base64"))
+  
+
 
 def store_packet(packet):
   """ 
@@ -163,4 +171,12 @@ def get_packet(port):
 
 
 if __name__ == '__main__':
-  get_packet(sys.argv[1])
+  parser = argparse.ArgumentParser(prog=sys.argv[0]) 
+  parser.add_argument('action', choices=('get', 'parse'))
+  parser.add_argument('file')
+  args = parser.parse_args()
+
+  if args.action == 'get':
+    get_packet(args.file)
+  elif args.action == 'parse':
+    parse_file(args.file)
