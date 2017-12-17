@@ -158,12 +158,15 @@ def store_packet(packet):
 
 
 def get_packet(port):
-  with serial.Serial(port, 9600) as ser:
+  with serial.Serial(port, 9600, timeout=2) as ser:
     while True:
+      ts = time.time()
       ser.write('S?\r')
       s = ser.read(32)
-      store_packet(s)
-      time.sleep(5)
+      # Only store valid responses
+      if len(s) == 32:
+      	store_packet(s)
+      time.sleep(1)
 
 
 if __name__ == '__main__':
