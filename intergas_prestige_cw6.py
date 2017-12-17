@@ -149,7 +149,7 @@ def store_packet(packet):
   """ 
   Storing the file 'readable' one-line ascii format, no compression this
   could be done an at later stage to reduce filesize. Normal month will 
-  be (every 10 seconds packeet of roughly 50 bytes) ~ 15MB uncompressed.
+  be (every 1 seconds packet of roughly 50 bytes) ~ 150MB uncompressed.
   Compression ratio will be around 10:1.
   """
 
