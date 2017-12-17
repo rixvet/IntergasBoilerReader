@@ -56,65 +56,60 @@ def parse_packet(s):
       f = float(msb * 265 + lsb) / 100
     return f
   
-  print "t1=", getFloat(d[1],d[0])
-  print "t2=", getFloat(d[3],d[2])
-  print "t3=", getFloat(d[5],d[4])
-  print "t4=", getFloat(d[7],d[6])
-  print "t5=", getFloat(d[9],d[8])
-  print "t6=", getFloat(d[11],d[10])
-  print "ch_pressure=", getFloat(d[13],d[12])
-  print "temp_set=", getFloat(d[15],d[14])
-  print "fanspeed_set=", getFloat(d[17],d[16])
-  print "fanspeed=", getFloat(d[19],d[18])
-  print "fan_pwm=", getFloat(d[21],d[20])
-  print "io_curr=", getFloat(d[23],d[22])
+  t1 = getFloat(d[1],d[0]) # Rookgassensor (?)
+  t2 = getFloat(d[3],d[2]) # Aanvoersensor S1
+  t3 = getFloat(d[5],d[4]) # Retoursensor S2
+  t4 = getFloat(d[7],d[6]) # Warmwatersensor S3
+  t5 = getFloat(d[9],d[8]) # Boilersensor S4
+  t6 = getFloat(d[11],d[10]) # buitenvoeler (?)
+  ch_pressure = getFloat(d[13],d[12])
+  temp_set = getFloat(d[15],d[14])
+  fanspeed_set = getFloat(d[17],d[16])
+  fanspeed = getFloat(d[19],d[18])
+  fan_pwm = getFloat(d[21],d[20])
+  io_curr = getFloat(d[23],d[22])
   
   
   
   flags = B27Flags()
-  print 'D27'
   flags.asbyte = d[27]
-  print "gp_switch=", flags.b.gp_switch
-  print "tap_switch=", flags.b.tap_switch
-  print "roomtherm=", flags.b.roomtherm
-  print "pump=", flags.b.pump
-  print "dwk=", flags.b.dwk
-  print "alarm_status=", flags.b.alarm_status
-  print "ch_cascade_relay=", flags.b.ch_cascade_relay
-  print "opentherm=", flags.b.opentherm
+  gp_switch = flags.b.gp_switch
+  tap_switch = flags.b.tap_switch
+  roomtherm = flags.b.roomtherm
+  pump = flags.b.pump
+  dwk = flags.b.dwk
+  alarm_status = flags.b.alarm_status
+  ch_cascade_relay = flags.b.ch_cascade_relay
+  opentherm = flags.b.opentherm
   
-  
-  print "D29"
   B29flags = B29Flags()
   B29flags.asbyte = d[29]
-  print "gasvalve=", B29flags.b.gasvalve
-  print "spark=", B29flags.b.spark
-  print "io_signal=", B29flags.b.io_signal
-  print "ch_ot_disabled=", B29flags.b.ch_ot_disabled
-  print "low_water_pressure=", B29flags.b.low_water_pressure
-  print "pressure_sensor=", B29flags.b.pressure_sensor
-  print "burner_block=", B29flags.b.burner_block
-  print "grad_flag=", B29flags.b.grad_flag
-  
-  
-  displ_code = 0
-  fault_code = 0
+  gasvalve = B29flags.b.gasvalve
+  spark =  B29flags.b.spark
+  io_signal = B29flags.b.io_signal
+  ch_ot_disabled = B29flags.b.ch_ot_disabled
+  low_water_pressure = B29flags.b.low_water_pressure
+  pressure_sensor = B29flags.b.pressure_sensor
+  burner_block = B29flags.b.burner_block
+  grad_flag = B29flags.b.grad_flag
   
   ch_pressure = None
-  if B29flags.b.pressure_sensor:
+  if not B29flags.b.pressure_sensor:
       ch_pressure = -35
   displ_code = d[24]
   
-  print "D27", d[27]
-  if d[27] == 128:
-      print "In loop", d[24]
-      fault_code = d[29]
-      displ_code = 256 + fault_code
+  # '-' => uit
+  # ' ' => CV in rust
+  # '1' => Gewenste temperatuur bereikt
+  # '2' => Zelftest
+  # '3' => Ventileren (voor en na-ventileren)
+  # '4' => Ontsteken
+  # '5' => CV Bedrijf
+  # '6' => Tapwaterbedrijf
+  # '7' => Opwarming boiler (tussenstap dmv omschakelventiel)
+
   
-  
-  print "ch_pressure=", ch_pressure
-  print "fault_code=", fault_code
-  print "displ_code=", displ_code
+  ch_pressure = ch_pressure
   
   c2s = {
       51: "Warm water",
@@ -125,23 +120,24 @@ def parse_packet(s):
   }
   
   status = c2s.get(displ_code, "Onbekend (%s)" % displ_code)
-  print "status=", status
-  
-  
-  
-  #      // ontbreken: ventileren, ontsteken, opwarmen boiler
-  #      // op display
-  #      // - uit; wachtstand; 0 Nadraaien CV; 1 Gew. temperatuur bereikt; 2 Zelftest
-  #//   3 Ventileren; 4  Ontsteken; 5 CV; 6 Warm water; 7 Opwarmen boiler
-  
-  print "raw =", ["%3i" % x for x in d[14:]],getFloat(d[15],d[14]), getFloat(d[17],d[16]), d[24], d[26], d[27], d[29]
+  status = status
 
+  return [t1, t2, t3, t4, t5, t6, ch_pressure, temp_set, fanspeed_set, fanspeed, fan_pwm, \
+        io_curr, gp_switch, tap_switch, roomtherm, pump, dwk, alarm_status, ch_cascade_relay, opentherm, \
+        gasvalve, spark, io_signal, ch_ot_disabled, low_water_pressure, pressure_sensor, burner_block, grad_flag, \
+        ch_pressure] 
+        
 
+  
 def parse_file(csvfile):
+  print 'time t1 t2 t3 t4 t5 ch_pressure temp_set fanspeed_set fanspeed fan_pwm ' + \
+        'io_curr gp_switch tap_switch roomtherm pump dwk alarm_status ch_cascade_relay opentherm ' + \
+        'gasvalve spark io_signal ch_ot_disabled low_water_pressure pressure_sensor burner_block grad_flag ' + \
+        'ch_pressure'
   with open(csvfile, "r") as fh:
     reader = csv.reader(fh, delimiter=";", lineterminator='\n')
     for row in reader:
-      print row[0], parse_packet(row[1].decode("base64"))
+      print " ".join(map(str, [row[0]] + parse_packet(row[1].decode("base64"))))
   
 
 
