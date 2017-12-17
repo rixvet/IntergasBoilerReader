@@ -130,7 +130,7 @@ def parse_packet(s):
 
   
 def parse_file(csvfile):
-  print 'time t1 t2 t3 t4 t5 ch_pressure temp_set fanspeed_set fanspeed fan_pwm ' + \
+  print 'time t1 t2 t3 t4 t5 t6 ch_pressure temp_set fanspeed_set fanspeed fan_pwm ' + \
         'io_curr gp_switch tap_switch roomtherm pump dwk alarm_status ch_cascade_relay opentherm ' + \
         'gasvalve spark io_signal ch_ot_disabled low_water_pressure pressure_sensor burner_block grad_flag ' + \
         'ch_pressure'
