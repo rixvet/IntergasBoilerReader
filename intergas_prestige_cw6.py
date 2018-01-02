@@ -130,10 +130,6 @@ def parse_packet(s):
 
   
 def parse_file(csvfile):
-  print 'time t1 t2 t3 t4 t5 t6 ch_pressure temp_set fanspeed_set fanspeed fan_pwm ' + \
-        'io_curr gp_switch tap_switch roomtherm pump dwk alarm_status ch_cascade_relay opentherm ' + \
-        'gasvalve spark io_signal ch_ot_disabled low_water_pressure pressure_sensor burner_block grad_flag ' + \
-        'ch_pressure'
   with open(csvfile, "r") as fh:
     reader = csv.reader(fh, delimiter=";", lineterminator='\n')
     for row in reader:
@@ -172,10 +168,15 @@ def get_packet(port):
 if __name__ == '__main__':
   parser = argparse.ArgumentParser(prog=sys.argv[0]) 
   parser.add_argument('action', choices=('get', 'parse'))
-  parser.add_argument('file')
+  parser.add_argument('files', nargs='+')
   args = parser.parse_args()
 
   if args.action == 'get':
-    get_packet(args.file)
+    get_packet(args.files[0])
   elif args.action == 'parse':
-    parse_file(args.file)
+    print 'time t1 t2 t3 t4 t5 t6 ch_pressure temp_set fanspeed_set fanspeed fan_pwm ' + \
+          'io_curr gp_switch tap_switch roomtherm pump dwk alarm_status ch_cascade_relay opentherm ' + \
+          'gasvalve spark io_signal ch_ot_disabled low_water_pressure pressure_sensor burner_block grad_flag ' + \
+          'ch_pressure'
+    for fn in args.files:
+        parse_file(fn)
