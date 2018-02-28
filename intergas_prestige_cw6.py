@@ -9,7 +9,6 @@ import time
 
 from struct import *
 
-
 c_uint8 = ctypes.c_uint8
 class B27Flags_bits(ctypes.LittleEndianStructure):
     _fields_ = [
@@ -133,7 +132,21 @@ def parse_file(csvfile):
   with open(csvfile, "r") as fh:
     reader = csv.reader(fh, delimiter=";", lineterminator='\n')
     for row in reader:
-      print " ".join(map(str, [row[0]] + parse_packet(row[1].decode("base64"))))
+      pkt = parse_packet(row[1].decode("base64"))
+      # Invalid values in input stream
+      if pkt[0] < 0 or pkt[1] < 0 or pkt[2] < 0 or pkt[3] < 0 or pkt[4] < 0:
+        print >> sys.stderr, "#ERROR1: ", pkt
+      elif pkt[7] < 0 or pkt[8] < 0 or pkt[9] < 0 or pkt[10] < 0 or pkt[11] < 0:
+        print >> sys.stderr, "#ERROR2: ", pkt
+      elif pkt[0] > 150 or pkt[1] > 100 or pkt[2] > 100 or pkt[3] > 100 or pkt[4] > 100:
+        print >> sys.stderr, "#ERROR3: ", pkt
+      elif pkt[7] > 100 or pkt[8] > 100 or pkt[9] > 100 or pkt[11] > 100:
+        print >> sys.stderr, "#ERROR4: ", pkt
+      elif (pkt[1] - pkt[2]) < -10 or (pkt[1] - pkt[2]) > 35:
+        # Possible yet highly unlikely
+        print >> sys.stderr, "#ERROR5: ", pkt
+      else:
+        print " ".join(map(str, [row[0]] + pkt))
   
 
 
